@@ -1,0 +1,4 @@
+credentials/*
+__pycache__/
+*.py[cod]
+.vscode/
