@@ -17,19 +17,19 @@ class TestPortfolio(unittest.TestCase):
 
         # Buy 2 Apple
         portfolio.buy("AAPL", 50, 2)
-        self.assertEqual(portfolio.initialBalance, 1000)
+        self.assertEqual(portfolio.initial_balance, 1000)
         self.assertEqual(portfolio.get_balance(), 900)
         self.assertEqual(portfolio.portfolio, {"AAPL": 2})
 
         # Buy 4 Google
         portfolio.buy("GOOG", 100, 4)
-        self.assertEqual(portfolio.initialBalance, 1000)
+        self.assertEqual(portfolio.initial_balance, 1000)
         self.assertEqual(portfolio.get_balance(), 500)
         self.assertEqual(portfolio.portfolio, {"AAPL": 2, "GOOG": 4})
 
         # Sell 1 Apple
         portfolio.sell("AAPL", 75, 1)
-        self.assertEqual(portfolio.initialBalance, 1000)
+        self.assertEqual(portfolio.initial_balance, 1000)
         self.assertEqual(portfolio.get_balance(), 575)
         self.assertEqual(portfolio.portfolio, {"AAPL": 1, "GOOG": 4})
 
@@ -38,9 +38,23 @@ class TestPortfolio(unittest.TestCase):
             portfolio.sell("AAPL", 75, 2)
         with self.assertRaises(Exception):
             portfolio.buy("AAPL", 100, 10)
-        self.assertEqual(portfolio.initialBalance, 1000)
+        self.assertEqual(portfolio.initial_balance, 1000)
         self.assertEqual(portfolio.get_balance(), 575)
         self.assertEqual(portfolio.portfolio, {"AAPL": 1, "GOOG": 4})
+
+    # Test the internal implementation of keep track of
+    # total investment value and price_per_share for stocks
+    def test_investment_prices(self):
+        portfolio = Portfolio(1000)
+
+        portfolio.buy("AAPL", 50, 2)
+        self.assertEqual(portfolio.investment_prices["AAPL"], 50)
+
+        portfolio.buy("AAPL", 100, 2)
+        self.assertEqual(portfolio.investment_prices["AAPL"], 75)
+
+        portfolio.buy("AAPL", 100, 1)
+        self.assertEqual(portfolio.investment_prices["AAPL"], 80)
 
     # Test get_quantity method
     def test_quantity(self):

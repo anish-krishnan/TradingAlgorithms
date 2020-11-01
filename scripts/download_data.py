@@ -11,6 +11,17 @@ import time
 API_KEY = open("credentials/apikey1.txt", "r").read()
 
 
+def rename_columns(df):
+    column_map = {
+        "1. open": "open",
+        "2. high": "high",
+        "3. low": "low",
+        "4. close": "close",
+        "5. volume": "volume",
+    }
+    df.rename(columns=column_map, inplace=True)
+
+
 def downloadData(symbol, timeInterval):
     ts = TimeSeries(key=API_KEY, output_format="pandas")
     ti = TechIndicators(key=API_KEY, output_format="pandas")
@@ -33,6 +44,7 @@ def downloadData(symbol, timeInterval):
 
     waitTime = 15
 
+    rename_columns(stock_data)
     print("stock", stock_data)
     stock_data.to_csv("data/" + timeInterval + "/" + symbol + "_stock.csv")
     time.sleep(waitTime)
@@ -89,6 +101,6 @@ def downloadData(symbol, timeInterval):
 
 
 if __name__ == "__main__":
-    stocks = ["JPM", "DAL", "SPY"]
+    stocks = ["AAPL", "JPM", "DAL", "SPY"]
     for stock in stocks:
         downloadData(stock, "daily")
