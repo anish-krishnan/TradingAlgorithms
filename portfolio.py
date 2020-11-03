@@ -71,6 +71,13 @@ class Portfolio(object):
         totalMoney = self.balance + self.get_holding_cash(price_map)
         return totalMoney - self.initial_balance
 
+    def profit_and_loss(self, price_map):
+        holding_cash = self.get_holding_cash(price_map)
+        total_spent = 0
+        for sym in self.portfolio:
+            total_spent += self.portfolio[sym] * self.investment_prices[sym]
+        return ((holding_cash / total_spent) - 1) * 100
+
     def print_d(*args):
         if self.debug:
             print(*args)
